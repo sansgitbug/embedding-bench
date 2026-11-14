@@ -1,0 +1,5 @@
+* text=auto eol=lf
+# Data files are hashed byte-for-byte in data/MANIFEST.json; never convert line endings.
+data/* -text
+results/raw/* -text
+*.png binary

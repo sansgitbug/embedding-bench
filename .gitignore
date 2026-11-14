@@ -1,0 +1,9 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# Embedding cache: large, and regenerable from the API or the local model
+cache/
+# Dry-run output is for smoke testing only
+results/dry-run/

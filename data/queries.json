@@ -1,0 +1,253 @@
+[
+  {
+    "query_id": "q01",
+    "query": "What are Apple's main cybersecurity risks?",
+    "ticker": "AAPL",
+    "relevant_chunk_ids": [
+      "AAPL-2026-05-01-0026",
+      "AAPL-2026-05-01-0027",
+      "AAPL-2026-05-01-0030"
+    ]
+  },
+  {
+    "query_id": "q02",
+    "query": "What risks does Apple face from tariffs and international trade?",
+    "ticker": "AAPL",
+    "relevant_chunk_ids": [
+      "AAPL-2025-05-02-0023",
+      "AAPL-2025-10-31-0013",
+      "AAPL-2025-10-31-0034"
+    ]
+  },
+  {
+    "query_id": "q03",
+    "query": "What are Apple's major legal and regulatory risks?",
+    "ticker": "AAPL",
+    "relevant_chunk_ids": [
+      "AAPL-2025-10-31-0023",
+      "AAPL-2025-10-31-0024",
+      "AAPL-2026-05-01-0028"
+    ]
+  },
+  {
+    "query_id": "q04",
+    "query": "What financial risks does Apple face?",
+    "ticker": "AAPL",
+    "relevant_chunk_ids": [
+      "AAPL-2025-10-31-0027",
+      "AAPL-2025-10-31-0028",
+      "AAPL-2025-10-31-0029"
+    ]
+  },
+  {
+    "query_id": "q05",
+    "query": "What risks does Apple face from artificial intelligence?",
+    "ticker": "AAPL",
+    "relevant_chunk_ids": [
+      "AAPL-2026-05-01-0030"
+    ]
+  },
+  {
+    "query_id": "q06",
+    "query": "What are Apple's supply chain risks?",
+    "ticker": "AAPL",
+    "relevant_chunk_ids": [
+      "AAPL-2025-10-31-0017",
+      "AAPL-2026-05-01-0015"
+    ]
+  },
+  {
+    "query_id": "q07",
+    "query": "How could U.S. tariffs and retaliatory tariffs affect Apple's business?",
+    "ticker": "AAPL",
+    "relevant_chunk_ids": [
+      "AAPL-2025-05-02-0012",
+      "AAPL-2025-05-02-0023"
+    ]
+  },
+  {
+    "query_id": "q08",
+    "query": "How could disruptions to suppliers or manufacturing affect Apple?",
+    "ticker": "AAPL",
+    "relevant_chunk_ids": [
+      "AAPL-2025-05-02-0024"
+    ]
+  },
+  {
+    "query_id": "q09",
+    "query": "How could geopolitical conflicts affect Apple's operations and suppliers?",
+    "ticker": "AAPL",
+    "relevant_chunk_ids": [
+      "AAPL-2025-10-31-0014"
+    ]
+  },
+  {
+    "query_id": "q10",
+    "query": "What risks does Apple face from litigation and government investigations?",
+    "ticker": "AAPL",
+    "relevant_chunk_ids": [
+      "AAPL-2025-10-31-0023",
+      "AAPL-2025-10-31-0026"
+    ]
+  },
+  {
+    "query_id": "q11",
+    "query": "How could changes in laws and regulations affect Apple's business?",
+    "ticker": "AAPL",
+    "relevant_chunk_ids": [
+      "AAPL-2025-10-31-0026"
+    ]
+  },
+  {
+    "query_id": "q12",
+    "query": "How does Apple assess and monitor cybersecurity risks?",
+    "ticker": "AAPL",
+    "relevant_chunk_ids": [
+      "AAPL-2025-10-31-0030"
+    ]
+  },
+  {
+    "query_id": "q13",
+    "query": "How could semiconductor shortages affect Apple's ability to obtain components?",
+    "ticker": "AAPL",
+    "relevant_chunk_ids": [
+      "AAPL-2025-10-31-0017"
+    ]
+  },
+  {
+    "query_id": "q14",
+    "query": "How do inflation, interest rates, and currency fluctuations affect Apple's financial results?",
+    "ticker": "AAPL",
+    "relevant_chunk_ids": [
+      "AAPL-2025-08-01-0013"
+    ]
+  },
+  {
+    "query_id": "q15",
+    "query": "What inventory valuation and purchase commitment risks does Apple face?",
+    "ticker": "AAPL",
+    "relevant_chunk_ids": [
+      "AAPL-2025-10-31-0018"
+    ]
+  },
+  {
+    "query_id": "q16",
+    "query": "What risks arise from uncertainty in Apple's tax obligations and tax examinations?",
+    "ticker": "AAPL",
+    "relevant_chunk_ids": [
+      "AAPL-2025-10-31-0029"
+    ]
+  },
+  {
+    "query_id": "q17",
+    "query": "How could failure to adopt modern security standards affect Microsoft's customers?",
+    "ticker": "MSFT",
+    "relevant_chunk_ids": [
+      "MSFT-2025-04-30-0051"
+    ]
+  },
+  {
+    "query_id": "q18",
+    "query": "What happened in the nation-state account compromise described by Microsoft, and what risks did it create?",
+    "ticker": "MSFT",
+    "relevant_chunk_ids": [
+      "MSFT-2025-04-30-0049"
+    ]
+  },
+  {
+    "query_id": "q19",
+    "query": "What supplier and component availability risks does Microsoft face?",
+    "ticker": "MSFT",
+    "relevant_chunk_ids": [
+      "MSFT-2025-04-30-0055"
+    ]
+  },
+  {
+    "query_id": "q20",
+    "query": "How do export and import controls affect Microsoft's products and supply chain?",
+    "ticker": "MSFT",
+    "relevant_chunk_ids": [
+      "MSFT-2025-04-30-0057"
+    ]
+  },
+  {
+    "query_id": "q21",
+    "query": "What risks can arise from ineffective AI development or deployment practices at Microsoft?",
+    "ticker": "MSFT",
+    "relevant_chunk_ids": [
+      "MSFT-2025-04-30-0054"
+    ]
+  },
+  {
+    "query_id": "q22",
+    "query": "How could AI legislation and regulation affect Microsoft's costs or opportunities?",
+    "ticker": "MSFT",
+    "relevant_chunk_ids": [
+      "MSFT-2025-07-30-0030"
+    ]
+  },
+  {
+    "query_id": "q23",
+    "query": "What regulatory scrutiny does Microsoft face over the design of its products and access to its technologies?",
+    "ticker": "MSFT",
+    "relevant_chunk_ids": [
+      "MSFT-2025-04-30-0056"
+    ]
+  },
+  {
+    "query_id": "q24",
+    "query": "How could catastrophic events or geopolitical conditions disrupt Microsoft's business?",
+    "ticker": "MSFT",
+    "relevant_chunk_ids": [
+      "MSFT-2025-04-30-0062"
+    ]
+  },
+  {
+    "query_id": "q25",
+    "query": "What risks does Microsoft face when operating in international and emerging markets?",
+    "ticker": "MSFT",
+    "relevant_chunk_ids": [
+      "MSFT-2025-04-30-0063"
+    ]
+  },
+  {
+    "query_id": "q26",
+    "query": "How could competitors' marketplace rules restrict Microsoft's ability to distribute products and services?",
+    "ticker": "MSFT",
+    "relevant_chunk_ids": [
+      "MSFT-2025-04-30-0046"
+    ]
+  },
+  {
+    "query_id": "q27",
+    "query": "How do U.S. export restrictions affect NVIDIA's ability to ship products to China?",
+    "ticker": "NVDA",
+    "relevant_chunk_ids": [
+      "NVDA-2025-02-26-0017"
+    ]
+  },
+  {
+    "query_id": "q28",
+    "query": "What risks arise from NVIDIA's non-cancellable and non-returnable purchase orders?",
+    "ticker": "NVDA",
+    "relevant_chunk_ids": [
+      "NVDA-2025-02-26-0026"
+    ]
+  },
+  {
+    "query_id": "q29",
+    "query": "How dependent is NVIDIA's semiconductor manufacturing and packaging on third parties outside the United States?",
+    "ticker": "NVDA",
+    "relevant_chunk_ids": [
+      "NVDA-2025-02-26-0031"
+    ]
+  },
+  {
+    "query_id": "q30",
+    "query": "What additional costs or operational changes could AI-related regulations create for NVIDIA?",
+    "ticker": "NVDA",
+    "relevant_chunk_ids": [
+      "NVDA-2026-02-25-0046"
+    ]
+  }
+]

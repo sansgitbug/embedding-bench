@@ -1,0 +1,10 @@
+{
+  "source": "FinSight (https://github.com/sansgitbug/Finsight), SEC EDGAR 10-K and 10-Q filings",
+  "chunk_count": 985,
+  "query_count": 30,
+  "sha256": {
+    "chunks.jsonl": "9cdfb8fe24d1e4b62bca495838593bdb6628ef27cf8814bd1b49c4085f8bd677",
+    "queries.json": "4167c8865bb744f3f715242e82ff062a480417eacba2d61d7edf719a16832573",
+    "near_duplicates.json": "ae39ea3b9af94432446d13ad11f141e7652285e4cbcf358505c3b54f0f0442b6"
+  }
+}
