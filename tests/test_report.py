@@ -100,3 +100,12 @@ def test_summary_refuses_unfinished_runs_unless_partial(ds, tmp_path, monkeypatc
         row = next(line for line in text.splitlines() if line.startswith(f"| {label} |"))
         cells = [c.strip() for c in row.split("|")[3:-1]]  # everything after setup and price
         assert cells[0] == status and all(c == "" for c in cells[1:])  # no numbers, no guesses
+
+
+def test_bootstrap_ci_is_deterministic_and_brackets_the_mean():
+    values = [1.0] * 20 + [0.0] * 10
+    lo, hi = report.bootstrap_ci(values)
+    assert (lo, hi) == report.bootstrap_ci(values)  # fixed seed
+    assert lo < sum(values) / len(values) < hi
+    assert report.bootstrap_ci([0.5] * 30) == (0.5, 0.5)  # no variation, no width
+    assert 0.45 < lo < 0.52 and 0.82 < hi < 0.88  # sanity for p = 2/3, n = 30

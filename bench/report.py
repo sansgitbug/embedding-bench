@@ -20,6 +20,24 @@ SUMMARY = ROOT / "results" / "summary.md"
 CHART = ROOT / "results" / "accuracy_vs_cost.png"
 
 
+BOOTSTRAP_ITERATIONS = 10_000
+BOOTSTRAP_SEED = 20261114
+
+
+def bootstrap_ci(values, *, iterations: int = BOOTSTRAP_ITERATIONS, seed: int = BOOTSTRAP_SEED,
+                 level: float = 0.95) -> tuple[float, float]:
+    """Percentile bootstrap CI for the mean of per-query scores.
+
+    Resamples queries with replacement. The fixed seed means every setup is
+    scored on the same 10,000 resamples of the same 30 queries.
+    """
+    values = np.asarray(values, dtype=float)
+    idx = np.random.default_rng(seed).integers(0, len(values), size=(iterations, len(values)))
+    means = values[idx].mean(axis=1)
+    lo, hi = np.percentile(means, [(1 - level) / 2 * 100, (1 + level) / 2 * 100])
+    return float(lo), float(hi)
+
+
 class ResultsMismatchError(RuntimeError):
     """A raw result file was not produced from the same chunks and queries."""
 
@@ -71,7 +89,9 @@ def summarize(name: str, lines: list[dict], meta: dict, ds, run_cfg: dict) -> di
         "price_source": run_cfg["price_source"],
         "chart_label": run_cfg.get("chart_label", meta["label"]),
         "recall": float(np.mean(recalls)),
+        "recall_ci": bootstrap_ci(recalls),
         "mrr": float(np.mean(rrs)),
+        "mrr_ci": bootstrap_ci(rrs),
         "correct": correct,
         "queries": len(lines),
         "misses": len(lines) - correct,
@@ -112,6 +132,10 @@ def money(value: float | None) -> str:
     return f"${value:.4f}" if value >= 0.001 else f"${value:.2g}"
 
 
+def with_ci(value: float, ci: tuple[float, float]) -> str:
+    return f"{value:.3f} ({ci[0]:.2f}–{ci[1]:.2f})"
+
+
 def price(row: dict) -> str:
     if row["index_price"] == row["query_price"]:
         text = "$0" if row["index_price"] == 0 else f"${row['index_price']:.2f}"
@@ -124,7 +148,7 @@ def write_summary(rows: list[dict], cfg: dict, n_queries: int, n_chunks: int) ->
     done = [r for r in rows if r["status"] == "done"]
     unfinished = [r for r in rows if r["status"] != "done"]
     head = [
-        "Setup", "List price per 1M tokens", "Recall@5", "MRR@5", f"Correct (of {n_queries})",
+        "Setup", "List price per 1M tokens", "Recall@5 (95% CI)", "MRR@5 (95% CI)", f"Correct (of {n_queries})",
         "Query p50 (ms)", "Query p95 (ms)", "Indexing time (s)", "Total cost at list price",
         "Cost per 1,000 correct", "Misses that were near-duplicates",
     ]
@@ -149,7 +173,8 @@ def write_summary(rows: list[dict], cfg: dict, n_queries: int, n_chunks: int) ->
             out.append("| " + " | ".join([r["label"], price(r), f"*{r['status']}*"] + [""] * (len(head) - 3)) + " |")
             continue
         out.append("| " + " | ".join([
-            r["label"], price(r), f"{r['recall']:.3f}", f"{r['mrr']:.3f}", str(r["correct"]),
+            r["label"], price(r), with_ci(r["recall"], r["recall_ci"]), with_ci(r["mrr"], r["mrr_ci"]),
+            str(r["correct"]),
             f"{r['p50_ms']:.0f}", f"{r['p95_ms']:.0f}", f"{r['index_seconds']:.0f}",
             money(r["total_cost"]), money(r["per_1000_correct"]),
             f"{r['near_dup_misses']} of {r['misses']}",
@@ -160,6 +185,9 @@ def write_summary(rows: list[dict], cfg: dict, n_queries: int, n_chunks: int) ->
         "",
         "- **Recall@5** is the share of a query's labelled passages found in the top 5, averaged over queries. "
         "**MRR@5** is 1/rank of the first labelled passage in the top 5 (0 if none), averaged over queries.",
+        f"- **95% CI** is a percentile bootstrap over queries: the {n_queries} queries resampled with "
+        f"replacement {BOOTSTRAP_ITERATIONS:,} times (seed {BOOTSTRAP_SEED}, the same resamples for every "
+        "setup), computed from the saved raw results. Overlapping intervals mean the data cannot separate those setups.",
         "- **Correct** counts queries with at least one labelled passage in the top 5.",
         "- **Query latency** is one embedding call per query, sent one at a time, after one untimed warm-up call. "
         "API latencies include the network round trip from the test machine; local latencies are model time on its CPU.",

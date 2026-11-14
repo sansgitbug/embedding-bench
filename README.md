@@ -27,6 +27,7 @@ Model IDs, prices and rate limits are in [config/providers.yaml](config/provider
   - **Recall@5**: share of a query's labelled chunks found in the top 5, averaged over the 30 queries.
   - **MRR@5**: 1/rank of the first labelled chunk in the top 5, 0 if none.
   - **Correct**: a query counts as correct if any labelled chunk is in its top 5.
+- **Uncertainty:** 95% confidence intervals for Recall@5 and MRR@5 use a percentile bootstrap. The 30 queries are resampled with replacement 10,000 times, using fixed seed 20261114, and every setup is scored on the same resamples. They are computed from the saved raw results only.
 - **Latency:** each query is embedded in its own call, sequentially, after one untimed warm-up call. p50 and p95 are over those 30 calls. API latency includes the network round trip from the test machine.
 - **Indexing time:** time spent inside embedding calls for all chunks. It excludes time spent waiting to stay under rate limits, which is reported separately in [results/summary.md](results/summary.md).
 - **Cost:** tokens reported by each provider × its list price, even though every run here used a free tier or trial key and cost nothing. **Cost per 1,000 correct** is query-embedding cost / correct × 1,000. The one-off indexing cost is in the total-cost column.
@@ -34,14 +35,14 @@ Model IDs, prices and rate limits are in [config/providers.yaml](config/provider
 
 ## Results
 
-| Setup | List price per 1M tokens | Recall@5 | MRR@5 | Correct (of 30) | Query p50 / p95 (ms) | Indexing time (s) | Total cost at list price | Cost per 1,000 correct |
+| Setup | List price per 1M tokens | Recall@5 (95% CI) | MRR@5 (95% CI) | Correct (of 30) | Query p50 / p95 (ms) | Indexing time (s) | Total cost at list price | Cost per 1,000 correct |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Local: bge-m3 | $0 | 0.594 | 0.530 | 22 | 158 / 199 | 2,637 | $0 | $0 |
-| Jina v5 small | $0.05 | 0.583 | 0.581 | 21 | 299 / 318 | 47 | $0.0367 | $0.0010 |
-| Cohere Pro | $0.12 | 0.556 | 0.462 | 20 | 355 / 363 | 34 | $0.0786 | $0.0023 |
-| Cohere Pro + Fast | $0.12 index / $0.08 query | 0.544 | 0.518 | 20 | 347 / 361 | 34 | $0.0786 | $0.0016 |
-| Voyage 4 large | $0.12 | 0.528 | 0.531 | 20 | 953 / 1,077 | 180 | $0.0877 | $0.0021 |
-| Local: MiniLM (256-token cap) | $0 | 0.511 | 0.378 | 17 | 15 / 19 | 66 | $0 | $0 |
+| Local: bge-m3 | $0 | 0.594 (0.44–0.75) | 0.530 (0.38–0.68) | 22 | 158 / 199 | 2,637 | $0 | $0 |
+| Jina v5 small | $0.05 | 0.583 (0.42–0.74) | 0.581 (0.42–0.74) | 21 | 299 / 318 | 47 | $0.0367 | $0.0010 |
+| Cohere Pro | $0.12 | 0.556 (0.39–0.71) | 0.462 (0.31–0.61) | 20 | 355 / 363 | 34 | $0.0786 | $0.0023 |
+| Cohere Pro + Fast | $0.12 index / $0.08 query | 0.544 (0.38–0.71) | 0.518 (0.36–0.68) | 20 | 347 / 361 | 34 | $0.0786 | $0.0016 |
+| Voyage 4 large | $0.12 | 0.528 (0.37–0.68) | 0.531 (0.37–0.69) | 20 | 953 / 1,077 | 180 | $0.0877 | $0.0021 |
+| Local: MiniLM (256-token cap) | $0 | 0.511 (0.34–0.68) | 0.378 (0.24–0.53) | 17 | 15 / 19 | 66 | $0 | $0 |
 
 Full table, token counts and price sources: [results/summary.md](results/summary.md).
 
@@ -49,7 +50,7 @@ Full table, token counts and price sources: [results/summary.md](results/summary
 
 What the numbers show, and what they don't:
 
-- **The top five setups are within 2 correct answers of each other** (22, 21, 20, 20, 20). One query is 3.3 percentage points, so these differences are not meaningful at this sample size.
+- **No setup is distinguishable from another on accuracy.** Every pair of 95% confidence intervals overlaps, and each interval is about 0.3 wide. Even the gap between the top (bge-m3, Recall@5 0.594) and the bottom (MiniLM, 0.511) is well inside the noise. The top five found 20–22 correct out of 30, and one query is 3.3 percentage points.
 - **MiniLM, which truncates chunks at 256 tokens, found the fewest.** It was also the fastest per query, by about 10×.
 - **The free local model kept up with the APIs on accuracy but indexed slowly on CPU:** 44 minutes for bge-m3, against under a minute of call time for Cohere and Jina.
 - **Cohere's recommended setup got the same 20 correct as Pro-only,** with a higher MRR and a lower query price.
@@ -86,3 +87,10 @@ To add a provider, write one file in [bench/providers/](bench/providers/) implem
 - **Rate limits.** Cohere's trial key enforced 100K tokens/min, which its rate-limits page does not list; it is stated in the API's own error messages. Voyage's limit for a key with no payment method (3 requests/min, 10K tokens/min) is likewise stated in its API's error messages, not its docs.
 - **Default settings only.** Each model ran at its default output dimension: 2048 for Cohere, 1024 for Voyage, Jina and bge-m3, 384 for MiniLM. Smaller dimensions, quantisation and other options were not tested.
 - **Results go stale.** Providers update models and prices; rerun before relying on these numbers.
+
+## What I'd do next
+
+- **More queries.** With 30 queries the confidence intervals are about 0.3 wide. Several hundred labelled queries, ideally with every relevant passage marked rather than one, would be needed to separate models that differ by a few points.
+- **A second corpus.** Add a different document type, such as earnings-call transcripts or bank and insurer filings, to see whether any ranking holds outside large-cap tech 10-Ks and 10-Qs.
+- **Repeated latency runs from a cloud machine.** Measure query latency several times, at different hours, from a cloud VM in the providers' regions, on paid tiers. That separates model speed from one home connection and free-tier throttling.
+- **More vendors.** Add OpenAI, Google Gemini, Mistral and Amazon Titan. Each is one adapter file and one config entry.
