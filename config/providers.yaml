@@ -116,15 +116,13 @@ runs:
   jina-v5-small:
     adapter: jina
     label: "Jina: jina-embeddings-v5-text-small"
-    chart_label: "Jina v5 small (price unverified)"
+    chart_label: "Jina v5 small"
     index_model: jina-embeddings-v5-text-small
     query_model: jina-embeddings-v5-text-small
     max_input_tokens: 32768
     index_price_per_1m: 0.05
     query_price_per_1m: 0.05
-    price_source: >-
-      UNVERIFIED: $50 per 1B-token top-up as quoted from jina.ai/reader by a web search;
-      no Jina page fetched on the check date showed a price
+    price_source: "Jina API dashboard top-up page: $50 for 1B tokens, listed as 0.050 / 1M tokens (smallest paid pack)"
     batch_texts: 64
     # jina.ai/embeddings: free key 100 RPM and 100,000 TPM. jina.ai/reader:
     # "Every new API key comes with 10M free tokens".

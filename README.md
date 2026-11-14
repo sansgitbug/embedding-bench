@@ -37,7 +37,7 @@ Model IDs, prices and rate limits are in [config/providers.yaml](config/provider
 | Setup | List price per 1M tokens | Recall@5 | MRR@5 | Correct (of 30) | Query p50 / p95 (ms) | Indexing time (s) | Total cost at list price | Cost per 1,000 correct |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | Local: bge-m3 | $0 | 0.594 | 0.530 | 22 | 158 / 199 | 2,637 | $0 | $0 |
-| Jina v5 small | $0.05 (unverified) | 0.583 | 0.581 | 21 | 299 / 318 | 47 | $0.0367 | $0.0010 |
+| Jina v5 small | $0.05 | 0.583 | 0.581 | 21 | 299 / 318 | 47 | $0.0367 | $0.0010 |
 | Cohere Pro | $0.12 | 0.556 | 0.462 | 20 | 355 / 363 | 34 | $0.0786 | $0.0023 |
 | Cohere Pro + Fast | $0.12 index / $0.08 query | 0.544 | 0.518 | 20 | 347 / 361 | 34 | $0.0786 | $0.0016 |
 | Voyage 4 large | $0.12 | 0.528 | 0.531 | 20 | 953 / 1,077 | 180 | $0.0877 | $0.0021 |
@@ -82,10 +82,7 @@ To add a provider, write one file in [bench/providers/](bench/providers/) implem
 - **Thin labels.** 23 of 30 queries have exactly one labelled relevant chunk, labelled by one person. A model that finds a different but equally good passage is scored as a miss.
 - **Near-duplicate passages.** Quarterly filings repeat text. For 2 of the 30 queries another filing contains a near-copy (8-word-shingle Jaccard > 0.8) of a labelled chunk, and retrieving it would be scored as a miss. In these runs, **0 misses in every setup** were near-duplicates, so this did not affect the numbers above. The check is in [data/near_duplicates.json](data/near_duplicates.json).
 - **Latency comes from one machine on one home internet connection.** Compare providers relative to each other, not as absolute figures. Voyage ran on a reduced-limit key with no payment method; whether that tier is also slower per request was not tested. The local models ran on a laptop CPU, not a GPU.
-- **Prices are list prices as of 2026-11-14, and two are less certain:**
-  - Jina's $0.05 per 1M could not be confirmed on any Jina page loaded that day; it is from a web-search quote.
-  - Cohere's prices come from its Embed 5 launch post, because its pricing page lists no per-token Embed price.
-  - Voyage's are from its pricing page.
+- **Prices are list prices as of 2026-11-14.** Voyage's are from its pricing page and Jina's from its API dashboard ($50 for 1B tokens, the smallest paid pack). Cohere's come from its Embed 5 launch post, because its pricing page lists no per-token Embed price.
 - **Rate limits.** Cohere's trial key enforced 100K tokens/min, which its rate-limits page does not list; it is stated in the API's own error messages. Voyage's limit for a key with no payment method (3 requests/min, 10K tokens/min) is likewise stated in its API's error messages, not its docs.
 - **Default settings only.** Each model ran at its default output dimension: 2048 for Cohere, 1024 for Voyage, Jina and bge-m3, 384 for MiniLM. Smaller dimensions, quantisation and other options were not tested.
 - **Results go stale.** Providers update models and prices; rerun before relying on these numbers.

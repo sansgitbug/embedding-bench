@@ -9,7 +9,7 @@
 | Cohere: embed-v5.0-pro (index and query) | $0.12 | 0.556 | 0.462 | 20 | 355 | 363 | 34 | $0.0786 | $0.0023 | 0 of 10 |
 | Cohere: embed-v5.0-pro index + embed-v5.0-fast query (Cohere's recommended setup) | $0.12 index / $0.08 query | 0.544 | 0.518 | 20 | 347 | 361 | 34 | $0.0786 | $0.0016 | 0 of 10 |
 | Voyage: voyage-4-large | $0.12 | 0.528 | 0.531 | 20 | 953 | 1077 | 180 | $0.0877 | $0.0021 | 0 of 10 |
-| Jina: jina-embeddings-v5-text-small | $0.05 (unverified) | 0.583 | 0.581 | 21 | 299 | 318 | 47 | $0.0367 | $0.0010 | 0 of 9 |
+| Jina: jina-embeddings-v5-text-small | $0.05 | 0.583 | 0.581 | 21 | 299 | 318 | 47 | $0.0367 | $0.0010 | 0 of 9 |
 
 How to read the columns:
 
@@ -27,7 +27,7 @@ Where each list price came from:
 - **Cohere: embed-v5.0-pro (index and query)**: Cohere Embed 5 launch post, 2026-09-30 (cohere.com/pricing lists no per-token Embed price)
 - **Cohere: embed-v5.0-pro index + embed-v5.0-fast query (Cohere's recommended setup)**: Cohere Embed 5 launch post, 2026-09-30 (cohere.com/pricing lists no per-token Embed price)
 - **Voyage: voyage-4-large**: docs.voyageai.com/docs/pricing
-- **Jina: jina-embeddings-v5-text-small**: UNVERIFIED: $50 per 1B-token top-up as quoted from jina.ai/reader by a web search; no Jina page fetched on the check date showed a price
+- **Jina: jina-embeddings-v5-text-small**: Jina API dashboard top-up page: $50 for 1B tokens, listed as 0.050 / 1M tokens (smallest paid pack)
 
 | Setup | Dimensions | Index tokens | Query tokens | Index calls | Rate-limit wait while indexing (s) | Device |
 |---|---:|---:|---:|---:|---:|---|
