@@ -312,3 +312,12 @@ def test_config_has_required_fields():
                       "query_price_per_1m", "price_source", "batch_texts", "limits", "sources"):
             assert field in run, f"{name} missing {field}"
         assert set(run["limits"]) == {"rpm", "tpm", "ipm"}
+
+
+def test_new_process_inherits_last_minute_of_calls(tmp_path):
+    first = RateLimiter(tpm=1000, ledger=Ledger(tmp_path / "l.json"))
+    first.acquire(100)
+    first.record_tokens(900)
+    clock = FakeClock()
+    second = RateLimiter(tpm=1000, ledger=Ledger(tmp_path / "l.json"), clock=clock, sleep=clock.sleep)
+    assert second.acquire(200) > 50  # waits out the earlier process's tokens

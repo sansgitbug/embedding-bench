@@ -1,0 +1,30 @@
+{
+  "run": "jina-v5-small",
+  "label": "Jina: jina-embeddings-v5-text-small",
+  "dry_run": false,
+  "index_model": "jina-embeddings-v5-text-small",
+  "query_model": "jina-embeddings-v5-text-small",
+  "dimensions": 1024,
+  "chunks": 985,
+  "queries": 30,
+  "top_k": 5,
+  "index_tokens": 733243,
+  "index_seconds_in_embedding_calls": 46.663,
+  "index_seconds_waiting_on_rate_limits": 441.106,
+  "index_calls": 20,
+  "index_retries": 0,
+  "index_price_per_1m": 0.05,
+  "query_price_per_1m": 0.05,
+  "price_source": "UNVERIFIED: $50 per 1B-token top-up as quoted from jina.ai/reader by a web search; no Jina page fetched on the check date showed a price",
+  "prices_checked": "2026-11-14",
+  "limits": {
+    "rpm": 100,
+    "tpm": 100000,
+    "ipm": null
+  },
+  "corpus_sha256": "9cdfb8fe24d1e4b62bca495838593bdb6628ef27cf8814bd1b49c4085f8bd677",
+  "queries_sha256": "4167c8865bb744f3f715242e82ff062a480417eacba2d61d7edf719a16832573",
+  "written_at": "2026-11-14T06:52:20+00:00",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "python": "3.11.9"
+}

@@ -55,7 +55,10 @@ runs:
     price_source: "Cohere Embed 5 launch post, 2026-09-30 (cohere.com/pricing lists no per-token Embed price)"
     batch_texts: 96              # documented max texts per call; fewer calls = less trial quota
     # Docs: trial keys 2,000 inputs/min on Embed and 1,000 API calls a month.
-    limits: {rpm: null, tpm: null, ipm: 2000}
+    # tpm 100,000: stated in the API's own 429 response to the trial key on
+    # 2026-11-14 ("trial token rate limit exceeded, limit is 100000 tokens per
+    # minute"); the rate-limits page does not list it.
+    limits: {rpm: null, tpm: 100000, ipm: 2000}
     max_calls_per_month: 1000    # shared by both Cohere rows (same key, same ledger)
     max_attempts: 2
     sources:
@@ -74,7 +77,10 @@ runs:
     query_price_per_1m: 0.08
     price_source: "Cohere Embed 5 launch post, 2026-09-30 (cohere.com/pricing lists no per-token Embed price)"
     batch_texts: 96
-    limits: {rpm: null, tpm: null, ipm: 2000}
+    # tpm 100,000: stated in the API's own 429 response to the trial key on
+    # 2026-11-14 ("trial token rate limit exceeded, limit is 100000 tokens per
+    # minute"); the rate-limits page does not list it.
+    limits: {rpm: null, tpm: 100000, ipm: 2000}
     max_calls_per_month: 1000
     max_attempts: 2
     sources:

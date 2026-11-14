@@ -88,3 +88,11 @@ def test_http_failures_map_to_retry_or_stop(monkeypatch, status, text, expected)
     provider, _ = mocked(monkeypatch, JinaProvider, "JINA_API_KEY", lambda body: httpx.Response(status, text=text))
     with pytest.raises(expected):
         provider.embed(["a"], "document", "m")
+
+
+def test_per_minute_429_waits_a_full_minute(monkeypatch):
+    provider, _ = mocked(monkeypatch, CohereProvider, "COHERE_API_KEY", lambda body: httpx.Response(
+        429, text='{"message":"trial token rate limit exceeded, limit is 100000 tokens per minute"}'))
+    with pytest.raises(RateLimitError) as exc:
+        provider.embed(["a"], "document", "embed-v5.0-pro")
+    assert exc.value.retry_after >= 60

@@ -43,15 +43,25 @@ class Ledger:
     def tokens_total(self) -> int:
         return self.state["tokens_total"]
 
-    def add_call(self) -> None:
+    def add_call(self, tokens_estimate: int = 0, inputs: int = 1, now: float | None = None) -> None:
         month = self._month()
         self.state["calls_by_month"][month] = self.state["calls_by_month"].get(month, 0) + 1
         self.state["calls_total"] += 1
+        # Last minute of calls, so a new process starts with the provider's real window.
+        now = time.time() if now is None else now
+        recent = [e for e in self.state.get("recent", []) if now - e[0] < 60]
+        self.state["recent"] = recent + [[now, tokens_estimate, inputs]]
         self._save()
 
     def add_tokens(self, tokens: int) -> None:
         self.state["tokens_total"] += tokens
+        if self.state.get("recent"):
+            self.state["recent"][-1][1] = tokens
         self._save()
+
+    def recent(self, now: float | None = None) -> list[list]:
+        now = time.time() if now is None else now
+        return [e for e in self.state.get("recent", []) if now - e[0] < 60]
 
     def _save(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
@@ -81,6 +91,11 @@ class RateLimiter:
         self.token_budget = token_budget
         self._clock, self._sleep = clock, sleep
         self._events: deque[list] = deque()  # [time, tokens, inputs]
+        if ledger is not None:
+            # Seed the window with calls made by earlier processes in the last minute.
+            wall, mono = time.time(), self._clock()
+            for at, tokens, inputs in ledger.recent(wall):
+                self._events.append([mono - (wall - at), tokens, inputs])
 
     def check_budget(self, calls: int, tokens: int) -> None:
         """Raise QuotaExhausted if `calls` more calls or `tokens` more tokens would break a budget."""
@@ -126,7 +141,7 @@ class RateLimiter:
             waited += pause
         self._events.append([self._clock(), tokens, inputs])
         if self.ledger is not None:
-            self.ledger.add_call()
+            self.ledger.add_call(tokens, inputs)
         return waited
 
     def record_tokens(self, tokens: int) -> None:

@@ -1,0 +1,30 @@
+{
+  "run": "cohere-pro-fast",
+  "label": "Cohere: embed-v5.0-pro index + embed-v5.0-fast query (Cohere's recommended setup)",
+  "dry_run": false,
+  "index_model": "embed-v5.0-pro",
+  "query_model": "embed-v5.0-fast",
+  "dimensions": 2048,
+  "chunks": 985,
+  "queries": 30,
+  "top_k": 5,
+  "index_tokens": 654358,
+  "index_seconds_in_embedding_calls": 34.316,
+  "index_seconds_waiting_on_rate_limits": 392.832,
+  "index_calls": 17,
+  "index_retries": 0,
+  "index_price_per_1m": 0.12,
+  "query_price_per_1m": 0.08,
+  "price_source": "Cohere Embed 5 launch post, 2026-09-30 (cohere.com/pricing lists no per-token Embed price)",
+  "prices_checked": "2026-11-14",
+  "limits": {
+    "rpm": null,
+    "tpm": 100000,
+    "ipm": 2000
+  },
+  "corpus_sha256": "9cdfb8fe24d1e4b62bca495838593bdb6628ef27cf8814bd1b49c4085f8bd677",
+  "queries_sha256": "4167c8865bb744f3f715242e82ff062a480417eacba2d61d7edf719a16832573",
+  "written_at": "2026-11-14T06:53:09+00:00",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "python": "3.11.9"
+}

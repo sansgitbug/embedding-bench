@@ -66,7 +66,10 @@ def post_json(client: httpx.Client, url: str, *, headers: dict, body: dict) -> d
     if status == 402 or (status == 429 and any(h in text.lower() for h in QUOTA_HINTS)):
         raise QuotaExhausted(f"HTTP {status} from {url}: {text}")
     if status == 429:
-        raise RateLimitError(f"HTTP 429: {text[:300]}", retry_after=_seconds(response.headers.get("retry-after")))
+        retry_after = _seconds(response.headers.get("retry-after"))
+        if retry_after is None and "per minute" in text.lower():
+            retry_after = 61.0  # a per-minute window only clears after a minute
+        raise RateLimitError(f"HTTP 429: {text[:300]}", retry_after=retry_after)
     if status >= 500:
         raise TransientError(f"HTTP {status}: {text[:300]}")
     if status != 200:
