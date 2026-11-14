@@ -19,6 +19,7 @@ runs:
   local-bge-m3:
     adapter: local
     label: "Local: BAAI/bge-m3 (long context)"
+    chart_label: "bge-m3 (local)"
     index_model: BAAI/bge-m3
     query_model: BAAI/bge-m3
     max_input_tokens: 8192
@@ -33,6 +34,7 @@ runs:
   local-minilm:
     adapter: local
     label: "Local: all-MiniLM-L6-v2 (truncates at 256 tokens)"
+    chart_label: "MiniLM (local, 256-token cap)"
     index_model: sentence-transformers/all-MiniLM-L6-v2
     query_model: sentence-transformers/all-MiniLM-L6-v2
     max_input_tokens: 256
@@ -47,6 +49,7 @@ runs:
   cohere-pro:
     adapter: cohere
     label: "Cohere: embed-v5.0-pro (index and query)"
+    chart_label: "Cohere Pro"
     index_model: embed-v5.0-pro
     query_model: embed-v5.0-pro
     max_input_tokens: 128000
@@ -70,6 +73,7 @@ runs:
   cohere-pro-fast:
     adapter: cohere
     label: "Cohere: embed-v5.0-pro index + embed-v5.0-fast query (Cohere's recommended setup)"
+    chart_label: "Cohere Pro + Fast"
     index_model: embed-v5.0-pro  # reuses cohere-pro's cached chunk embeddings
     query_model: embed-v5.0-fast
     max_input_tokens: 128000
@@ -90,6 +94,7 @@ runs:
   voyage-4-large:
     adapter: voyage
     label: "Voyage: voyage-4-large"
+    chart_label: "Voyage 4 large"
     index_model: voyage-4-large
     query_model: voyage-4-large
     max_input_tokens: 32000
@@ -111,6 +116,7 @@ runs:
   jina-v5-small:
     adapter: jina
     label: "Jina: jina-embeddings-v5-text-small"
+    chart_label: "Jina v5 small (price unverified)"
     index_model: jina-embeddings-v5-text-small
     query_model: jina-embeddings-v5-text-small
     max_input_tokens: 32768

@@ -69,6 +69,7 @@ def summarize(name: str, lines: list[dict], meta: dict, ds, run_cfg: dict) -> di
         "index_price": meta["index_price_per_1m"],
         "query_price": meta["query_price_per_1m"],
         "price_source": run_cfg["price_source"],
+        "chart_label": run_cfg.get("chart_label", meta["label"]),
         "recall": float(np.mean(recalls)),
         "mrr": float(np.mean(rrs)),
         "correct": correct,
@@ -113,8 +114,10 @@ def money(value: float | None) -> str:
 
 def price(row: dict) -> str:
     if row["index_price"] == row["query_price"]:
-        return "$0" if row["index_price"] == 0 else f"${row['index_price']:.2f}"
-    return f"${row['index_price']:.2f} index / ${row['query_price']:.2f} query"
+        text = "$0" if row["index_price"] == 0 else f"${row['index_price']:.2f}"
+    else:
+        text = f"${row['index_price']:.2f} index / ${row['query_price']:.2f} query"
+    return text + (" (unverified)" if row["price_source"].startswith("UNVERIFIED") else "")
 
 
 def write_summary(rows: list[dict], cfg: dict, n_queries: int, n_chunks: int) -> None:
@@ -208,7 +211,7 @@ def write_chart(rows: list[dict], complete: bool) -> None:
     for r in sorted(plotted, key=lambda r: r["recall"]):
         right_side = r["per_1000_correct"] > xmax * 0.6
         ax.annotate(
-            r["label"].split(": ", 1)[1], (r["per_1000_correct"], r["recall"]),
+            r["chart_label"], (r["per_1000_correct"], r["recall"]),
             xytext=(-9 if right_side else 9, 0), textcoords="offset points",
             ha="right" if right_side else "left", va="center", fontsize=8.5, color=ink,
         )
